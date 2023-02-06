@@ -14,6 +14,8 @@ import { RatingModule } from './rating/rating.module';
 import { TelegramModule } from './telegram/telegram.module';
 import { UserModule } from './user/user.module';
 import { WorksModule } from './works/works.module';
+import { BrandService } from './brand/brand.service';
+import { BrandModule } from './brand/brand.module';
 
 @Module({
   imports: [
@@ -33,6 +35,7 @@ import { WorksModule } from './works/works.module';
     AuthModule,
     WorksModule,
     RatingModule,
+    BrandModule,
   ],
   controllers: [AppController],
   providers: [AppService],

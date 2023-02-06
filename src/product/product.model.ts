@@ -1,57 +1,39 @@
 import { prop, Ref } from "@typegoose/typegoose"
 import { Base, TimeStamps } from "@typegoose/typegoose/lib/defaultClasses"
 import { AddModel } from "src/adds/add.model"
+import { BrandModel } from "src/brand/brand.model"
 import { CategoryModel } from "src/category/category.model"
 
 export interface ProductModel extends Base { }
 
-export class ParametersProf {
+export class Settings {
   @prop()
-  rang: number
+  name: string
   @prop()
-  basic_profile_width: number
-  @prop()
-  count_cell: number
-  @prop()
-  accessories: string
-  @prop()
-  double_glazed_window: number
-  @prop()
-  number_of_sealing_contours: number
-  @prop()
-  color: string
+  value: string
 }
-
-export class LevelParams {
-  @prop()
-  warmInsulation: number
-  @prop()
-  soundInsulation: number
-  @prop()
-  lightInsulation: number
-}
-
-
-
 
 export class ProductModel extends TimeStamps {
   @prop()
   image: string
 
   @prop()
-  logo_image: string
+  title: string
 
   @prop()
-  title: string
+  is_available: boolean
+
+  @prop()
+  count_on_store: number
+
+  @prop({ ref: () => BrandModel })
+  brand: Ref<BrandModel>[]
 
   @prop()
   description_short: string
 
   @prop()
   description_full: string
-
-  @prop()
-  levelSetting: LevelParams
 
   @prop({ default: 4.0 })
   rating?: number
@@ -63,7 +45,7 @@ export class ProductModel extends TimeStamps {
   slug: string
 
   @prop()
-  parameters: ParametersProf
+  details: Settings[]
 
   @prop({ ref: () => CategoryModel })
   category: Ref<CategoryModel>[]

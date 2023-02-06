@@ -1,38 +1,22 @@
 import { Type } from "class-transformer"
-import { ArrayMaxSize, ArrayMinSize, IsArray, IsBoolean, IsNumber, isObject, IsObject, IsString } from "class-validator"
+import { IsArray, IsBoolean, IsNumber, IsString } from "class-validator"
 
-export class ParametersProf {
+export class Settings {
   @IsString()
-  rang: number
-  @IsNumber()
-  basic_profile_width: number
-  @IsNumber()
-  count_cell: number
+  name: string
   @IsString()
-  accessories: string
-  @IsString()
-  color: string
-  @IsNumber()
-  double_glazed_window: number
-  @IsNumber()
-  number_of_sealing_contours: number
-}
-
-export class LevelParams {
-  @IsNumber()
-  warmInsulation: number
-  @IsNumber()
-  soundInsulation: number
-  @IsNumber()
-  lightInsulation: number
+  value: string
 }
 
 export class CreateProductDto {
   @IsString()
   image: string
 
-  @IsString()
-  logo_image: string
+  @IsBoolean()
+  is_available: boolean
+
+  @IsNumber()
+  count_on_store: number
 
   @IsString()
   title: string
@@ -43,14 +27,11 @@ export class CreateProductDto {
   @IsString()
   description_short: string
 
+  @IsArray()
+  details: Settings[]
+
   @IsString()
   description_full: string
-
-  @IsObject()
-  levelSetting: LevelParams
-
-  @IsObject()
-  parameters: ParametersProf
 
   @IsArray()
   @IsString({ each: true })
@@ -60,6 +41,9 @@ export class CreateProductDto {
   @IsString({ each: true })
   add: string[]
 
-  isSendTelegram?: boolean
+  @IsArray()
+  @IsString({ each: true })
+  brand: string[]
 
+  isSendTelegram?: boolean
 }
