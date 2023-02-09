@@ -51,7 +51,7 @@ export class ProductModel extends TimeStamps {
   category: Ref<CategoryModel>[]
 
   @prop({ ref: () => AddModel })
-  add: Ref<AddModel>[]
+  add?: Ref<AddModel>[]
 
   @prop({ default: false })
   isSendTelegram?: boolean

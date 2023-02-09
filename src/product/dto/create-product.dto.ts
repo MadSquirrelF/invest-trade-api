@@ -39,7 +39,7 @@ export class CreateProductDto {
 
   @IsArray()
   @IsString({ each: true })
-  add: string[]
+  add?: string[]
 
   @IsArray()
   @IsString({ each: true })
