@@ -31,6 +31,13 @@ export class UserController {
     return this.userService.toogleFavorite(productId, user)
   }
 
+  @Put('profile/favorites/remove')
+  @HttpCode(200)
+  @Auth()
+  async removeFavorite(@User() user: UserModel) {
+    return this.userService.removeFavorite(user)
+  }
+
 
   @Get('count')
   @Auth('admin')

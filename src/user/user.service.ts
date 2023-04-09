@@ -64,6 +64,15 @@ export class UserService {
 
 
 
+  async removeFavorite(user: UserModel) {
+    const { _id, favorites } = user
+
+    await this.UserModel.findByIdAndUpdate(_id, {
+      favorites: []
+    }).exec()
+  }
+
+
   async toogleFavorite(productId: Types.ObjectId, user: UserModel) {
 
     const { _id, favorites } = user
@@ -77,7 +86,7 @@ export class UserService {
   async getFavoriteProduct(_id: Types.ObjectId) {
     return await this.UserModel.findById(_id, 'favorites').populate({
       path: 'favorites', populate: {
-        path: 'category'
+        path: 'category brand'
       }
     }).exec().then(data => data.favorites)
   }
