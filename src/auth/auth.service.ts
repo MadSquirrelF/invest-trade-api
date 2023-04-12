@@ -80,6 +80,7 @@ export class AuthService {
       email: user.email,
       sex: user.sex,
       avatar: user.avatar,
+      phone_number: user.phone_number,
       username: user.username,
       isAdmin: user.isAdmin
     }
