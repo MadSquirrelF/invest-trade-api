@@ -5,19 +5,63 @@ import { UserModel } from "src/user/user.model"
 
 export interface OrderModel extends Base { }
 
+
+export class Items {
+  @prop()
+  id: string
+
+  @prop()
+  name: string
+
+  @prop()
+  image: string
+
+  @prop()
+  category: string
+
+  @prop()
+  brand: string
+
+  @prop()
+  count: number
+
+  @prop()
+  url: string
+}
+
+export class Address {
+  @prop({ default: "Россия" })
+  country: string
+
+  @prop({ default: "Челябинск" })
+  city: string
+
+  @prop()
+  street: string
+}
+
 export class OrderModel extends TimeStamps {
+  @prop()
+  slug: string
+
   @prop({ default: "Ожидание звонка" })
   status: string
 
   @prop()
   total_count: number
 
+  @prop()
+  address: Address
+
   @prop({ default: "По карте" })
   payment: string;
 
   @prop({ ref: () => UserModel })
-  userId: Ref<UserModel>
+  user: Ref<UserModel>
 
-  @prop({ ref: () => ProductModel })
-  items: Ref<ProductModel>[]
+  @prop()
+  items: Items[]
+
+  @prop({ default: false })
+  isSendTelegram?: boolean
 }

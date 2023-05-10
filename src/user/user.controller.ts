@@ -45,9 +45,6 @@ export class UserController {
     return this.userService.getCount()
   }
 
-
-
-
   @Get()
   @Auth('admin')
   async getUsers(@Query('searchTerm') searchTerm?: string) {

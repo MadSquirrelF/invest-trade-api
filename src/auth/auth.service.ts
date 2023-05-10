@@ -21,6 +21,7 @@ export class AuthService {
       ...tokens
     }
   }
+  
   async getNewTokens({ refreshToken }: RefreshTokenDto) {
     if (!refreshToken) throw new UnauthorizedException("Please sign in!")
 

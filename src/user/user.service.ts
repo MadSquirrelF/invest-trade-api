@@ -46,17 +46,17 @@ export class UserService {
 
     return
   }
+
   async getCount() {
     return this.UserModel.find().count().exec()
   }
+
   async getAll(searchTerm?: string) {
     let options = {}
 
     if (searchTerm) options = { $or: [{ email: new RegExp(searchTerm, 'i') }] }
     return this.UserModel.find(options).select('-password -updatedAt -__v').sort({ createdAt: 'desc' }).exec()
   }
-
-
 
   async delete(id: string) {
     return this.UserModel.findByIdAndDelete(id).exec()
@@ -65,7 +65,7 @@ export class UserService {
 
 
   async removeFavorite(user: UserModel) {
-    const { _id, favorites } = user
+    const { _id} = user
 
     await this.UserModel.findByIdAndUpdate(_id, {
       favorites: []
@@ -90,4 +90,6 @@ export class UserService {
       }
     }).exec().then(data => data.favorites)
   }
+
+
 }

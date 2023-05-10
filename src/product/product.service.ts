@@ -146,6 +146,7 @@ export class ProductService {
 
     return deleteDoc
   }
+  
   async sendNotification(dto: CreateProductDto) {
 
     await this.telegramService.sendPhoto('https://sun9-west.userapi.com/sun9-9/s/v1/ig2/0BFIJsSLdv_7Mu5qqqUspNipZmw999vtpeBBiVkP9YkK_sB2po2HX54zvg8o7AMBdGMNRlQFqv_yR8U2JQV9bJWI.jpg?size=2160x2160&quality=96&type=album')

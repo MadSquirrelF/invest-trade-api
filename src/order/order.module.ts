@@ -5,6 +5,8 @@ import { ProductModule } from 'src/product/product.module';
 import { OrderController } from './order.controller';
 import { OrderModel } from './order.model';
 import { OrderService } from './order.service';
+import { UserModule } from 'src/user/user.module';
+import { TelegramModule } from 'src/telegram/telegram.module';
 
 @Module({
   imports: [TypegooseModule.forFeature([{
@@ -12,7 +14,7 @@ import { OrderService } from './order.service';
     schemaOptions: {
       collection: 'Order'
     }
-  }]), ProductModule],
+  }]), TelegramModule, UserModule, ProductModule],
   
   controllers: [OrderController],
   providers: [OrderService],

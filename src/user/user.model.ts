@@ -1,5 +1,6 @@
 import { prop, Ref } from "@typegoose/typegoose"
 import { Base, TimeStamps } from "@typegoose/typegoose/lib/defaultClasses"
+import { OrderModel } from "src/order/order.model"
 import { ProductModel } from "src/product/product.model"
 
 export interface UserModel extends Base { }

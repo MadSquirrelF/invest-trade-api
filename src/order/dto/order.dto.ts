@@ -1,19 +1,27 @@
 import { IsArray, IsNumber, IsString } from "class-validator"
 
+
+export class Items {
+ @IsString()
+  id: string
+ @IsString()
+  name: string
+ @IsString()
+  image: string
+ @IsString()
+  category: string
+ @IsString()
+  brand: string
+  @IsNumber()
+  count: number
+ @IsString()
+  url: string
+}
+
 export class CreateOrderDto {
-  @IsString()
-  status: string
-  
-  @IsString()
-  userId: string;
-
-  @IsString()
-  payment: string
-
   @IsNumber()
   total_count: number
 
   @IsArray()
-  @IsString({ each: true })
-  items: string[]
+  items: Items[]
 }
