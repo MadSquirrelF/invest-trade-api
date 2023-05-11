@@ -25,8 +25,8 @@ export class OrderController {
 
   @Get('user-orders')
   @Auth()
-  async getUserOrders(@User() user: UserModel) {
-    return this.orderService.getAllUserOrders(user);
+  async getUserOrders(@User() user: UserModel, @Query('searchTerm') searchTerm?: string) {
+    return this.orderService.getAllUserOrders(user, searchTerm);
   }
 
   @Get()

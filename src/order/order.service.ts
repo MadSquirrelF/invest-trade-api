@@ -21,23 +21,24 @@ export class OrderService {
     return order
   }
 
-  async getAllUserOrders(user: UserModel) {
+  async getAllUserOrders(user: UserModel, searchTerm?: string) {
     const { _id } = user
     let options = {}
     options = { user: { $in: _id } }
+    if (searchTerm) options = { $or: [{ status : new RegExp(searchTerm, 'i') }] }
     return this.orderModel.find(options).select('-updatedAt -__v').populate('user').sort({ createdAt: 'desc' }).exec()
   }
 
   async updateOrder(orderId: string, dto: UpdateOrderDto, user: UserModel) {
 
     if (!dto.isSendTelegram) {
-      await this.sendTelegramNotion(user,dto)
+      await this.sendTelegramNotion(user, dto)
       dto.isSendTelegram = true
     }
-    
+
     const { _id } = user
 
-    const order = await this.orderModel.findOneAndUpdate({ orderId , user: { $in: _id } }, dto, {new: true}).exec()
+    const order = await this.orderModel.findByIdAndUpdate(  orderId  , dto).exec()
 
     if (!order) throw new NotFoundException('Order not found')
    
@@ -56,8 +57,8 @@ export class OrderService {
 
     const { _id } = user
 
-    const cancelOrder = await this.orderModel.findOneAndUpdate(
-      { orderId , user: { $in: _id } },
+    const cancelOrder = await this.orderModel.findByIdAndUpdate(
+       orderId  ,
       { status: 'Заказ отменен' },
     ).exec()
 
