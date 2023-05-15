@@ -15,9 +15,6 @@ export class CreateProductDto {
   @IsBoolean()
   is_available: boolean
 
-  @IsNumber()
-  count_on_store: number
-
   @IsString()
   title: string
 

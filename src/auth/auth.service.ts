@@ -46,7 +46,7 @@ export class AuthService {
       username: dto.username,
       sex: dto.sex,
       avatar: dto.avatar,
-      phone_number: '',
+      phone_number: dto.phone_number,
       password: await hash(dto.password, salt)
     })
     const user = await newUser.save()

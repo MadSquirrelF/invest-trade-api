@@ -17,7 +17,8 @@ export class RegisterDto {
   @IsString()
   sex: string
 
-  phone_number?: string
+  @IsString()
+  phone_number: string
 }
 export class LoginDto {
   @IsEmail()

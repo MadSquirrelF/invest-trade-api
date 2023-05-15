@@ -23,9 +23,6 @@ export class ProductModel extends TimeStamps {
   @prop()
   is_available: boolean
 
-  @prop()
-  count_on_store: number
-
   @prop({ ref: () => BrandModel })
   brand: Ref<BrandModel>[]
 

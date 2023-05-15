@@ -19,15 +19,29 @@ export class ProductService {
   }
 
 
-  async getProducts(searchTerm?: string, page?: string, orderBy?: SortOrder | { $meta: "textScore"; }, sortBy?: string, categoryIds?: Types.ObjectId[], brandIds?: Types.ObjectId[]) {
+  async getProducts( searchTerm?: string, page?: string, orderBy?: SortOrder | { $meta: "textScore"; }, sortBy?: string, brandIds?: Types.ObjectId[], categoryIds?: Types.ObjectId[] ,) {
 
     let options = {}
-    if (categoryIds) options = { category: { $in: categoryIds } }
-    if (brandIds) options = { brand: { $in: brandIds } }
-    if (searchTerm) options = { $or: [{ title: new RegExp(searchTerm, 'i') }] }
+    if (categoryIds) {
+      if (searchTerm) {
+        options = {category: { $in: categoryIds }, $or: [{ title: new RegExp(searchTerm, 'i') }] }
+      } else {
+        options = { category: { $in: categoryIds }  } 
+      }
+    } else if (brandIds) {
+      if (searchTerm) {
+        options = { brand: { $in: brandIds }, $or: [{ title: new RegExp(searchTerm, 'i') }]  }
+      } else {
+        options = { brand: { $in: brandIds }  }
+      }
+    }
+    else if (searchTerm) options = { $or: [{ title: new RegExp(searchTerm, 'i') }] }
+    else {
+      options = {}
+    }
 
 
-    const query = this.productModel.find(options)
+    const query = this.productModel.find(options) 
     const total = await this.productModel.count(options).exec()
     const pageOf = parseInt(page) || 1
 
@@ -110,7 +124,6 @@ export class ProductService {
       title: '',
       slug: '',
       is_available: true,
-      count_on_store: 1,
       description_short: '',
       description_full: '',
       details: [
@@ -130,12 +143,6 @@ export class ProductService {
 
     const Product = await this.productModel.create(defaultValue)
     return Product._id
-  }
-
-  async getCollections() {
-    const products = await this.getProducts()
-    const collections = products
-    return collections
   }
 
 

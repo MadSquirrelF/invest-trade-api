@@ -22,6 +22,7 @@ export class BrandService {
     if (searchTerm) options = { $or: [{ name: new RegExp(searchTerm, 'i') }] }
     return this.BrandModel.find(options).select('-updatedAt -__v').sort({ createdAt: 'desc' }).exec()
   }
+
   /* Admin place */
   async byId(_id: string) {
     const category = await this.BrandModel.findById(_id)
