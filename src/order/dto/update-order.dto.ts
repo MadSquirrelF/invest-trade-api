@@ -21,4 +21,15 @@ export class UpdateOrderDto {
    address: Address
 
    isSendTelegram?: boolean
- }
+}
+
+export class UpdateOrderAdminDto {
+  @IsString()
+  payment?: string
+
+  @IsObject()
+  address?: Address
+
+  @IsString()
+  status?: string
+}

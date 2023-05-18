@@ -5,7 +5,7 @@ import { ModelType } from "@typegoose/typegoose/lib/types"
 import { CreateOrderDto } from "./dto/order.dto"
 import { UserModel } from "src/user/user.model"
 import { TelegramService } from "src/telegram/telegram.service"
-import { UpdateOrderDto } from "./dto/update-order.dto"
+import { UpdateOrderAdminDto, UpdateOrderDto } from "./dto/update-order.dto"
 
 @Injectable()
 export class OrderService {
@@ -21,11 +21,25 @@ export class OrderService {
     return order
   }
 
-  async getAllUserOrders(user: UserModel, searchTerm?: string) {
+  async getAllUserOrders(user: UserModel, statusOrder?: string) {
     const { _id } = user
+
     let options = {}
-    options = { user: { $in: _id } }
-    if (searchTerm) options = { $or: [{ status : new RegExp(searchTerm, 'i') }] }
+    options = {user: { $in: _id }}
+
+    if (statusOrder) {
+      options = { user: { $in: _id }, status: statusOrder }
+    }
+    return this.orderModel.find(options).select('-updatedAt -__v').populate('user').sort({ createdAt: 'desc' }).exec()
+  }
+
+  async getAll(statusOrder?: string) {
+    let options = {}
+
+    if (statusOrder) {
+      options = { status: statusOrder }
+    }
+
     return this.orderModel.find(options).select('-updatedAt -__v').populate('user').sort({ createdAt: 'desc' }).exec()
   }
 
@@ -36,13 +50,29 @@ export class OrderService {
       dto.isSendTelegram = true
     }
 
-    const { _id } = user
-
-    const order = await this.orderModel.findByIdAndUpdate(  orderId  , dto).exec()
+    const order = await this.orderModel.findByIdAndUpdate(orderId  , dto).exec()
 
     if (!order) throw new NotFoundException('Order not found')
    
     return order
+  }
+
+  async updateAdminOrder(orderId: string, dto: UpdateOrderAdminDto) {
+
+    const order = await this.orderModel.findById(orderId);
+
+    if (dto.address) {
+      order.address = dto.address
+    }
+    if (dto.status) {
+      order.status = dto.status
+    }
+    if (dto.payment) {
+      order.payment = dto.payment
+    }
+    await order.save()
+
+    return
   }
 
   async deleteOrder(id: string) {
@@ -59,7 +89,7 @@ export class OrderService {
 
     const cancelOrder = await this.orderModel.findByIdAndUpdate(
        orderId  ,
-      { status: 'Заказ отменен' },
+      { status: 'Отменен' },
     ).exec()
 
     if (!cancelOrder) throw new NotFoundException('Order not found');
@@ -67,12 +97,7 @@ export class OrderService {
 
 
   
-  async getAll(searchTerm?: string) {
-    let options = {}
-
-    if (searchTerm) options = { $or: [{ id: new RegExp(searchTerm, 'i') }] }
-    return this.orderModel.find(options).select('-updatedAt -__v').populate('user').sort({ createdAt: 'desc' }).exec()
-  }
+ 
 
 
   async createOrder(user: UserModel, dto: CreateOrderDto ) {

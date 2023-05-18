@@ -44,7 +44,7 @@ export class OrderModel extends TimeStamps {
   @prop()
   slug: string
 
-  @prop({ default: "Ожидание звонка" })
+  @prop({ default: "Ожидание" })
   status: string
 
   @prop()

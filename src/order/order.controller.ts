@@ -17,7 +17,7 @@ import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/order.dto';
 import { UserModel } from 'src/user/user.model';
 import { IdValidationPipe } from 'src/pipes/id.validation.pipe';
-import { UpdateOrderDto } from './dto/update-order.dto';
+import { UpdateOrderAdminDto, UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller('orders')
 export class OrderController {
@@ -25,14 +25,14 @@ export class OrderController {
 
   @Get('user-orders')
   @Auth()
-  async getUserOrders(@User() user: UserModel, @Query('searchTerm') searchTerm?: string) {
-    return this.orderService.getAllUserOrders(user, searchTerm);
+  async getUserOrders(@User() user: UserModel, @Query('statusOrder') statusOrder?: string) {
+    return this.orderService.getAllUserOrders(user, statusOrder);
   }
 
   @Get()
   @Auth('admin')
-  async getAllOrders(@Query('searchTerm') searchTerm?: string) {
-    return this.orderService.getAll(searchTerm)
+  async getAllOrders(@Query('statusOrder') statusOrder?: string) {
+    return this.orderService.getAll(statusOrder)
   }
 
   @UsePipes(new ValidationPipe())
@@ -40,6 +40,14 @@ export class OrderController {
   @Auth('admin')
   async getOrder(@Param('id', IdValidationPipe) id: string) {
     return this.orderService.byId(id)
+  }
+
+  @UsePipes(new ValidationPipe())
+  @Put(':id')
+  @HttpCode(200)
+  @Auth('admin')
+  async updateAdminOrder(@Param('id', IdValidationPipe) orderId: string, @Body() dto: UpdateOrderAdminDto) {
+    return this.orderService.updateAdminOrder(orderId, dto)
   }
 
   @UsePipes(new ValidationPipe())
