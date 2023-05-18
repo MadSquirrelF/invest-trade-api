@@ -33,3 +33,8 @@ export class UpdateOrderAdminDto {
   @IsString()
   status?: string
 }
+
+export class ChangeStatusDto {
+  @IsString()
+  status: string
+}

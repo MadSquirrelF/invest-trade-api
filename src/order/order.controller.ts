@@ -17,7 +17,7 @@ import { OrderService } from './order.service';
 import { CreateOrderDto } from './dto/order.dto';
 import { UserModel } from 'src/user/user.model';
 import { IdValidationPipe } from 'src/pipes/id.validation.pipe';
-import { UpdateOrderAdminDto, UpdateOrderDto } from './dto/update-order.dto';
+import { ChangeStatusDto, UpdateOrderAdminDto, UpdateOrderDto } from './dto/update-order.dto';
 
 @Controller('orders')
 export class OrderController {
@@ -58,6 +58,7 @@ export class OrderController {
     return this.orderService.updateOrder(orderId, dto, user)
   }
 
+
   @Delete(':id')
   @HttpCode(200)
   @Auth('admin')
@@ -65,11 +66,20 @@ export class OrderController {
     return this.orderService.deleteOrder(id)
   }
 
+
   @Put('cancel/:id')
   @HttpCode(200)
   @Auth()
   async cancelOrder(@User() user: UserModel, @Param('id', IdValidationPipe) id: string ) {
     return this.orderService.cancelOrder(id,user)
+  }
+
+
+  @Put('change-status/:id')
+  @HttpCode(200)
+  @Auth('admin')
+  async changeStatusOrder(@Param('id', IdValidationPipe) id: string, @Body() dto: ChangeStatusDto ) {
+    return this.orderService.changeStatusOrder(id, dto)
   }
 
   @Post('create-order')

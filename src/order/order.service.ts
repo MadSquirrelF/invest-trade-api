@@ -5,7 +5,7 @@ import { ModelType } from "@typegoose/typegoose/lib/types"
 import { CreateOrderDto } from "./dto/order.dto"
 import { UserModel } from "src/user/user.model"
 import { TelegramService } from "src/telegram/telegram.service"
-import { UpdateOrderAdminDto, UpdateOrderDto } from "./dto/update-order.dto"
+import { ChangeStatusDto, UpdateOrderAdminDto, UpdateOrderDto } from "./dto/update-order.dto"
 
 @Injectable()
 export class OrderService {
@@ -25,7 +25,7 @@ export class OrderService {
     const { _id } = user
 
     let options = {}
-    options = {user: { $in: _id }}
+    options = {}
 
     if (statusOrder) {
       options = { user: { $in: _id }, status: statusOrder }
@@ -93,6 +93,16 @@ export class OrderService {
     ).exec()
 
     if (!cancelOrder) throw new NotFoundException('Order not found');
+  }
+
+  async changeStatusOrder(orderId: string, dto: ChangeStatusDto) {
+    const order = await this.orderModel.findById(orderId);
+
+    order.status = dto.status
+   
+    await order.save()
+
+    return
   }
 
 
