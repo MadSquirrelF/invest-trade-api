@@ -1,10 +1,10 @@
 {
 	"version": 2,
 	"env": {
-		"JWT_SECRET": "win74nd0w",
-		"MONGO_URI": "mongodb+srv://admin:XGz-MQj-tRe-ynL@cluster0.c9le2tc.mongodb.net/invest_trade_dev_db?retryWrites=true&w=majority",
-		"NEST_PORT": "1418",
-		"NODE_ENV": "production"
+		"JWT_SECRET": "@jwt_secret",
+		"MONGO_URI": "@invest_trade_mongo_uri",
+		"NEST_PORT": "@invest_trade_port",
+		"NODE_ENV": "@invest_trade_node"
 	},
 	"builds": [
 		{
