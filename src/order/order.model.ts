@@ -30,10 +30,10 @@ export class Items {
 }
 
 export class Address {
-  @prop({ default: "Россия" })
+  @prop()
   country: string
 
-  @prop({ default: "Челябинск" })
+  @prop()
   city: string
 
   @prop()
