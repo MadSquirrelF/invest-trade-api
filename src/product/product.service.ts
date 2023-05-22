@@ -13,22 +13,36 @@ export class ProductService {
 
 
   async bySlug(slug: string) {
-    const doc = await this.productModel.findOne({ slug }).populate('category add').exec()
+    const doc = await this.productModel.findOne({ slug }).populate('category add brand').exec()
     if (!doc) throw new NotFoundException('Product not found')
     return doc
   }
 
 
-  async getProducts(searchTerm?: string, page?: string, orderBy?: SortOrder | { $meta: "textScore"; }, sortBy?: string, categoryIds?: Types.ObjectId[]) {
+  async getProducts( searchTerm?: string, page?: string, orderBy?: SortOrder | { $meta: "textScore"; }, sortBy?: string, brandIds?: Types.ObjectId[], categoryIds?: Types.ObjectId[] ,) {
+
     let options = {}
+    if (categoryIds) {
+      if (searchTerm) {
+        options = {category: { $in: categoryIds }, $or: [{ title: new RegExp(searchTerm, 'i') }] }
+      } else {
+        options = { category: { $in: categoryIds }  } 
+      }
+    } else if (brandIds) {
+      if (searchTerm) {
+        options = { brand: { $in: brandIds }, $or: [{ title: new RegExp(searchTerm, 'i') }]  }
+      } else {
+        options = { brand: { $in: brandIds }  }
+      }
+    }
+    else if (searchTerm) options = { $or: [{ title: new RegExp(searchTerm, 'i') }] }
+    else {
+      options = {}
+    }
 
-    if (categoryIds) options = { category: { $in: categoryIds } }
 
-    if (searchTerm) options = { $or: [{ title: new RegExp(searchTerm, 'i') }] }
-
-
-    const query = this.productModel.find(options)
-    // const total = await this.ProductModel.count(options).exec()
+    const query = this.productModel.find(options) 
+    const total = await this.productModel.count(options).exec()
     const pageOf = parseInt(page) || 1
 
 
@@ -46,13 +60,14 @@ export class ProductService {
 
     const limit = 6
 
-    const data = await query.skip((pageOf - 1) * limit).limit(limit).populate('category add').exec()
+    const data = await query.skip((pageOf - 1) * limit).limit(limit).populate('category add brand').exec()
 
-    // total,
-    // pageOf,
-    // last_page: Math.ceil(total / limit)
-
-    return data
+    return {
+      data,
+      total,
+      pageOf,
+      last_page: Math.ceil(total / limit)
+    }
   }
 
   async byCategory(categoryIds: Types.ObjectId[]) {
@@ -76,7 +91,7 @@ export class ProductService {
   async updateCountOpened(slug: string) {
     const updateDoc = await this.productModel.findOneAndUpdate({ slug }, { $inc: { countOpened: 1 } }, { new: true }).exec()
 
-    if (!updateDoc) throw new NotFoundException('Add not found')
+    if (!updateDoc) throw new NotFoundException('Product not found')
 
     return updateDoc
   }
@@ -105,26 +120,23 @@ export class ProductService {
 
   async create() {
     const defaultValue: CreateProductDto = {
-      logo_image: '',
       image: '',
       title: '',
       slug: '',
+      is_available: true,
       description_short: '',
       description_full: '',
-      levelSetting: {
-        warmInsulation: 0,
-        soundInsulation: 0,
-        lightInsulation: 0
-      },
-      parameters: {
-        rang: 0,
-        basic_profile_width: 0,
-        count_cell: 0,
-        accessories: 'Roto',
-        double_glazed_window: 0,
-        number_of_sealing_contours: 0,
-        color: 'Черный'
-      },
+      details: [
+        {
+          name: '',
+          value: ''
+        },
+        {
+          name: '',
+          value: ''
+        }
+      ],
+      brand: [],
       add: [],
       category: [],
     }
@@ -133,11 +145,6 @@ export class ProductService {
     return Product._id
   }
 
-  async getCollections() {
-    const products = await this.getProducts()
-    const collections = products
-    return collections
-  }
 
   async delete(id: string) {
     const deleteDoc = await this.productModel.findByIdAndDelete(id).exec()
@@ -146,9 +153,10 @@ export class ProductService {
 
     return deleteDoc
   }
+  
   async sendNotification(dto: CreateProductDto) {
 
-    await this.telegramService.sendPhoto('https://grain-prof.ru/upload/thumbs/ccc/ccc7afc7274dedd594a2902c37a54d4a.png')
+    await this.telegramService.sendPhoto('https://sun9-west.userapi.com/sun9-9/s/v1/ig2/0BFIJsSLdv_7Mu5qqqUspNipZmw999vtpeBBiVkP9YkK_sB2po2HX54zvg8o7AMBdGMNRlQFqv_yR8U2JQV9bJWI.jpg?size=2160x2160&quality=96&type=album')
 
     const msg = `<b>🆕Новый товар  уже на сайте!  ${dto.title} </b>`
 
@@ -157,7 +165,7 @@ export class ProductService {
         inline_keyboard: [
           [
             {
-              url: 'http://www.invest-trade.biz/',
+              url: 'https://invest-trade.biz/#stuff',
               text: ' Перейти на сайт'
             }
           ],

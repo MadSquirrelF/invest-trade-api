@@ -35,8 +35,8 @@ export class ProductController {
   }
 
   @Get()
-  async getAll(@Query('searchTerm') searchTerm?: string, @Query('page') page?: string, @Query('orderBy') orderBy?: SortOrder | { $meta: "textScore"; }, @Query('sortBy') sortBy?: string, @Query('categoryIds') categoryIds?: Types.ObjectId[]) {
-    return this.ProductService.getProducts(searchTerm, page, orderBy, sortBy, categoryIds)
+  async getAll(@Query('searchTerm') searchTerm?: string, @Query('page') page?: string, @Query('orderBy') orderBy?: SortOrder | { $meta: "textScore"; }, @Query('sortBy') sortBy?: string,@Query('brandIds') brandIds?: Types.ObjectId[],@Query('categoryIds') categoryIds?: Types.ObjectId[],  ) {
+    return this.ProductService.getProducts( searchTerm, page, orderBy, sortBy, brandIds, categoryIds, )
   }
 
 

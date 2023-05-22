@@ -21,6 +21,7 @@ export class AuthService {
       ...tokens
     }
   }
+  
   async getNewTokens({ refreshToken }: RefreshTokenDto) {
     if (!refreshToken) throw new UnauthorizedException("Please sign in!")
 
@@ -45,7 +46,7 @@ export class AuthService {
       username: dto.username,
       sex: dto.sex,
       avatar: dto.avatar,
-      phone_number: '',
+      phone_number: dto.phone_number,
       password: await hash(dto.password, salt)
     })
     const user = await newUser.save()
@@ -80,6 +81,7 @@ export class AuthService {
       email: user.email,
       sex: user.sex,
       avatar: user.avatar,
+      phone_number: user.phone_number,
       username: user.username,
       isAdmin: user.isAdmin
     }

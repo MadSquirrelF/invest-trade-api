@@ -46,9 +46,11 @@ export class UserService {
 
     return
   }
+
   async getCount() {
     return this.UserModel.find().count().exec()
   }
+
   async getAll(searchTerm?: string) {
     let options = {}
 
@@ -56,12 +58,19 @@ export class UserService {
     return this.UserModel.find(options).select('-password -updatedAt -__v').sort({ createdAt: 'desc' }).exec()
   }
 
-
-
   async delete(id: string) {
     return this.UserModel.findByIdAndDelete(id).exec()
   }
 
+
+
+  async removeFavorite(user: UserModel) {
+    const { _id} = user
+
+    await this.UserModel.findByIdAndUpdate(_id, {
+      favorites: []
+    }).exec()
+  }
 
 
   async toogleFavorite(productId: Types.ObjectId, user: UserModel) {
@@ -77,8 +86,10 @@ export class UserService {
   async getFavoriteProduct(_id: Types.ObjectId) {
     return await this.UserModel.findById(_id, 'favorites').populate({
       path: 'favorites', populate: {
-        path: 'category'
+        path: 'category brand'
       }
     }).exec().then(data => data.favorites)
   }
+
+
 }

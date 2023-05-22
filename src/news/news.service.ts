@@ -93,7 +93,7 @@ export class NewsService {
         inline_keyboard: [
           [
             {
-              url: 'https://vk.com/public202627186',
+              url: 'https://www.invest-trade.biz/#news',
               text: '👀 Смотреть новости!'
             }
           ],
