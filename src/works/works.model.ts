@@ -12,9 +12,29 @@ export class WorksModel extends TimeStamps {
   slug: string
 
   @prop()
-  description: string
+  description_full: string
+
+  @prop()
+  description_short: string
 
   @prop()
   poster: string
 
+  @prop()
+  image_1?: string
+
+  @prop()
+  image_2?: string
+
+  @prop()
+  image_3?: string
+
+  @prop()
+  image_4?: string
+
+  @prop()
+  image_5?: string
+
+  @prop()
+  image_6?: string
 }
