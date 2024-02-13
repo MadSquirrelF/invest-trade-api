@@ -16,6 +16,7 @@ export class UserService {
     if (!user) throw new NotFoundException('User not found')
     return user
   }
+
   async updateProfile(_id: string, dto: UpdateUserDto) {
     const user = await this.UserModel.findById(_id)
     const isSameUser = await this.UserModel.findOne({ email: dto.email })
@@ -39,9 +40,9 @@ export class UserService {
       user.phone_number = dto.phone_number
     }
     user.email = dto.email
-    if (dto.isAdmin || dto.isAdmin === true) {
-      user.isAdmin = dto.isAdmin
-    }
+    // if (dto.isAdmin || dto.isAdmin === true) {
+    //   user.isAdmin = dto.isAdmin
+    // }
     await user.save()
 
     return

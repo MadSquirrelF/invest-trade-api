@@ -40,19 +40,19 @@ export class UserController {
 
 
   @Get('count')
-  @Auth('admin')
+  @Auth('ADMIN')
   async getCountUsers() {
     return this.userService.getCount()
   }
 
   @Get()
-  @Auth('admin')
+  @Auth('ADMIN')
   async getUsers(@Query('searchTerm') searchTerm?: string) {
     return this.userService.getAll(searchTerm)
   }
 
   @Get(':id')
-  @Auth('admin')
+  @Auth('ADMIN')
   async getUser(@Param('id', IdValidationPipe) id: string) {
     return this.userService.byId(id)
   }
@@ -73,7 +73,7 @@ export class UserController {
   @UsePipes(new ValidationPipe())
   @Put(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async updateUser(@Param('id', IdValidationPipe) id: string, @Body() dto: UpdateUserDto) {
 
     return this.userService.updateProfile(id, dto)
@@ -81,7 +81,7 @@ export class UserController {
 
   @Delete(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async deleteUser(@Param('id', IdValidationPipe) id: string) {
 
     return this.userService.delete(id)

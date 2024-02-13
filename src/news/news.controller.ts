@@ -22,7 +22,7 @@ export class NewsController {
   }
 
   @Get(':id')
-  @Auth('admin')
+  @Auth('ADMIN')
   async get(@Param('id', IdValidationPipe) id: string) {
     return this.NewService.byId(id)
   }
@@ -30,7 +30,7 @@ export class NewsController {
   @UsePipes(new ValidationPipe())
   @Post()
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async create() {
     return this.NewService.create()
   }
@@ -44,14 +44,14 @@ export class NewsController {
   @UsePipes(new ValidationPipe())
   @Put(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async update(@Param('id', IdValidationPipe) id: string, @Body() dto: NewsDto) {
     return this.NewService.update(id, dto)
   }
 
   @Delete(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async delete(@Param('id', IdValidationPipe) id: string) {
 
     return this.NewService.delete(id)

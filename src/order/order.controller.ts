@@ -30,14 +30,14 @@ export class OrderController {
   }
 
   @Get()
-  @Auth('admin')
+  @Auth('ADMIN')
   async getAllOrders(@Query('statusOrder') statusOrder?: string) {
     return this.orderService.getAll(statusOrder)
   }
 
   @UsePipes(new ValidationPipe())
   @Get(':id')
-  @Auth('admin')
+  @Auth('ADMIN')
   async getOrder(@Param('id', IdValidationPipe) id: string) {
     return this.orderService.byId(id)
   }
@@ -45,7 +45,7 @@ export class OrderController {
   @UsePipes(new ValidationPipe())
   @Put(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async updateAdminOrder(@Param('id', IdValidationPipe) orderId: string, @Body() dto: UpdateOrderAdminDto) {
     return this.orderService.updateAdminOrder(orderId, dto)
   }
@@ -61,7 +61,7 @@ export class OrderController {
 
   @Delete(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async delete(@Param('id', IdValidationPipe) id: string) {
     return this.orderService.deleteOrder(id)
   }
@@ -77,7 +77,7 @@ export class OrderController {
 
   @Put('change-status/:id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async changeStatusOrder(@Param('id', IdValidationPipe) id: string, @Body() dto: ChangeStatusDto ) {
     return this.orderService.changeStatusOrder(id, dto)
   }

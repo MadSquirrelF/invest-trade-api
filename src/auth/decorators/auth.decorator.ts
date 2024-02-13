@@ -3,4 +3,4 @@ import { TypeRole } from "../auth.interface";
 import { OnlyAdminGuard } from "../guards/admin.guard";
 import { JwtAuthGuard } from "../guards/jwt.guard";
 
-export const Auth = (role: TypeRole = 'user') => applyDecorators(role === 'admin' ? UseGuards(JwtAuthGuard, OnlyAdminGuard) : UseGuards(JwtAuthGuard))
+export const Auth = (role: TypeRole = 'USER') => applyDecorators(role === 'ADMIN' ? UseGuards(JwtAuthGuard, OnlyAdminGuard) : UseGuards(JwtAuthGuard))

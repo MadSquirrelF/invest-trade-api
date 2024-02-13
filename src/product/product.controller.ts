@@ -41,7 +41,7 @@ export class ProductController {
 
 
   @Get(':id')
-  @Auth('admin')
+  @Auth('ADMIN')
   async get(@Param('id', IdValidationPipe) id: string) {
     return this.ProductService.byId(id)
   }
@@ -49,7 +49,7 @@ export class ProductController {
   @UsePipes(new ValidationPipe())
   @Post()
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async create() {
     return this.ProductService.create()
   }
@@ -57,14 +57,14 @@ export class ProductController {
   @UsePipes(new ValidationPipe())
   @Put(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async update(@Param('id', IdValidationPipe) id: string, @Body() dto: CreateProductDto) {
     return this.ProductService.update(id, dto)
   }
 
   @Delete(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async delete(@Param('id', IdValidationPipe) id: string) {
 
     return this.ProductService.delete(id)

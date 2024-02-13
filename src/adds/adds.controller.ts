@@ -25,7 +25,7 @@ export class AddsController {
   }
 
   @Get(':id')
-  @Auth('admin')
+  @Auth('ADMIN')
   async get(@Param('id', IdValidationPipe) id: string) {
     return this.AddService.byId(id)
   }
@@ -33,7 +33,7 @@ export class AddsController {
   @UsePipes(new ValidationPipe())
   @Post()
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async create() {
 
     return this.AddService.create()
@@ -42,14 +42,14 @@ export class AddsController {
   @UsePipes(new ValidationPipe())
   @Put(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async update(@Param('id', IdValidationPipe) id: string, @Body() dto: AddDto) {
     return this.AddService.update(id, dto)
   }
 
   @Delete(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async delete(@Param('id', IdValidationPipe) id: string) {
 
     return this.AddService.delete(id)

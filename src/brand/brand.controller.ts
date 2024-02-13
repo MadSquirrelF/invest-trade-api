@@ -18,7 +18,7 @@ export class BrandController {
   }
 
   @Get(':id')
-  @Auth('admin')
+  @Auth('ADMIN')
   async get(@Param('id', IdValidationPipe) id: string) {
     return this.BrandService.byId(id)
   }
@@ -26,7 +26,7 @@ export class BrandController {
   @UsePipes(new ValidationPipe())
   @Post()
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async create() {
 
     return this.BrandService.create()
@@ -35,14 +35,14 @@ export class BrandController {
   @UsePipes(new ValidationPipe())
   @Put(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async update(@Param('id', IdValidationPipe) id: string, @Body() dto: CreateBrandDto) {
     return this.BrandService.update(id, dto)
   }
 
   @Delete(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async delete(@Param('id', IdValidationPipe) id: string) {
 
     return this.BrandService.delete(id)

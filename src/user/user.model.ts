@@ -12,20 +12,41 @@ export class UserModel extends TimeStamps {
   @prop()
   username: string
 
+  @prop({ default: '' })
+  firstname: string
+
+  @prop({ default: '' })
+  lastname: string
+
+  @prop({ default: 'RUSSIA' })
+  country: string
+
+  @prop({ default: '' })
+  city: string
+
+  @prop({ default: '' })
+  address: string
+
+  @prop({ default: 18 })
+  age: number
+
+  @prop({ default: "RUB" })
+  currency: string
+
   @prop({ default: "Мужской" })
   sex: string
 
   @prop({ default: "/uploads/users/default.svg" })
   avatar: string
 
-  @prop()
+  @prop({ default: "" })
   phone_number: string
 
   @prop()
   password: string
 
-  @prop({ default: false })
-  isAdmin?: boolean
+  @prop({ default: 'USER' })
+  roles?: string
 
   @prop({ default: [], ref: () => ProductModel })
   favorites?: Ref<ProductModel>[]

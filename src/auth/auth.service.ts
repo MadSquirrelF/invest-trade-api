@@ -29,26 +29,35 @@ export class AuthService {
     if (!result) throw new UnauthorizedException("Invalid token or expired!")
     const user = await this.UserModel.findById(result._id)
     const tokens = await this.issueTokenPair(String(user._id))
+
     return {
       user: this.returnUserFields(user),
       ...tokens
     }
+
   }
+
+  
   async register(dto: RegisterDto) {
 
     const oldUser = await this.UserModel.findOne({ email: dto.email })
+
     if (oldUser) {
       throw new BadRequestException('User with this email is already registered in the system')
     }
+
+    if (dto.password !== dto.submitPassword) {
+      throw new BadRequestException('The confirmation password does not match the password')
+    }
+
     const salt = await genSalt(10)
+
     const newUser = new this.UserModel({
       email: dto.email,
       username: dto.username,
-      sex: dto.sex,
-      avatar: dto.avatar,
-      phone_number: dto.phone_number,
       password: await hash(dto.password, salt)
     })
+
     const user = await newUser.save()
     const tokens = await this.issueTokenPair(String(newUser._id))
     return {
@@ -56,34 +65,52 @@ export class AuthService {
       ...tokens
     }
   }
+
   async validateUser(dto: LoginDto): Promise<UserModel> {
     const user = await this.UserModel.findOne({ email: dto.email })
+
     if (!user) {
-      throw new UnauthorizedException('Пользователь не найден')
+      throw new UnauthorizedException('Неверное имя пользователя или пароль')
     }
+
     const isValidPassword = await compare(dto.password, user.password)
+
     if (!isValidPassword) {
-      throw new UnauthorizedException('Неверный пароль')
+      throw new UnauthorizedException('Неверное имя пользователя или пароль')
     }
+
     return user
   }
+
   async issueTokenPair(UserId: string) {
 
     const data = { _id: UserId }
 
     const refreshToken = await this.jwtService.signAsync(data, { expiresIn: '15d' })
+    
     const accessToken = await this.jwtService.signAsync(data, { expiresIn: '1h' })
+
     return { refreshToken, accessToken }
   }
+
   returnUserFields(user: UserModel) {
     return {
       _id: user._id,
       email: user.email,
+      username: user.username,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      age: user.age,
       sex: user.sex,
       avatar: user.avatar,
       phone_number: user.phone_number,
-      username: user.username,
-      isAdmin: user.isAdmin
+      country: user.country,
+      currency: user.currency,
+      city: user.city,
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+      address: user.address,
+      roles: user.roles
     }
   }
 }

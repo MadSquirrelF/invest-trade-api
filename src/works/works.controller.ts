@@ -19,7 +19,7 @@ export class WorksController {
   }
 
   @Get(':id')
-  @Auth('admin')
+  @Auth('ADMIN')
   async get(@Param('id', IdValidationPipe) id: string) {
     return this.WorkService.byId(id)
   }
@@ -27,9 +27,8 @@ export class WorksController {
   @UsePipes(new ValidationPipe())
   @Post()
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async create() {
-
     return this.WorkService.create()
   }
 
@@ -44,14 +43,14 @@ export class WorksController {
   @UsePipes(new ValidationPipe())
   @Put(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async update(@Param('id', IdValidationPipe) id: string, @Body() dto: WorksDto) {
     return this.WorkService.update(id, dto)
   }
 
   @Delete(':id')
   @HttpCode(200)
-  @Auth('admin')
+  @Auth('ADMIN')
   async delete(@Param('id', IdValidationPipe) id: string) {
 
     return this.WorkService.delete(id)

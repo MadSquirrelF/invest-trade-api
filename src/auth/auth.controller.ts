@@ -22,9 +22,6 @@ export class AuthController {
     return this.AuthService.login(dto)
   }
 
-
-
-
   @UsePipes(new ValidationPipe())
   @HttpCode(200)
   @Post('/register')
