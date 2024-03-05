@@ -46,16 +46,15 @@ export class AuthService {
       throw new BadRequestException('User with this email is already registered in the system')
     }
 
-    if (dto.password !== dto.submitPassword) {
-      throw new BadRequestException('The confirmation password does not match the password')
-    }
-
     const salt = await genSalt(10)
 
     const newUser = new this.UserModel({
       email: dto.email,
       username: dto.username,
-      password: await hash(dto.password, salt)
+      password: await hash(dto.password, salt),
+      firstname: dto.firstname,
+      lastname: dto.lastname,
+      phone_number: dto.phone_number
     })
 
     const user = await newUser.save()

@@ -7,23 +7,32 @@ export class RegisterDto {
   @IsEmail()
   email: string
 
+  @MinLength(3, {
+    message: 'Username cannot be less than 6 characters!'
+  })
+  @IsString()
+  username: string
+
   @MinLength(6, {
     message: 'Password cannot be less than 6 characters!'
   })
   @IsString()
   password: string
 
-  @MinLength(6, {
-    message: 'Password cannot be less than 6 characters!'
+  @MinLength(3, {
+    message: 'Firstname cannot be less than 3 characters!'
   })
   @IsString()
-  submitPassword: string
+  firstname: string
 
   @MinLength(3, {
-    message: 'Username cannot be less than 6 characters!'
+    message: 'Firstname cannot be less than 3 characters!'
   })
   @IsString()
-  username: string
+  lastname: string
+
+  @IsString()
+  phone_number: string;
 }
 
 export class LoginDto {
